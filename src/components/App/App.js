@@ -49,6 +49,7 @@ export default function App() {
     const newCallObject = DailyIframe.createCallObject();
     setRoomUrl(url);
     setCallObject(newCallObject);
+    window.callobj = newCallObject
     setAppState(STATE_JOINING);
     newCallObject.join({ url });
   }, []);
@@ -117,6 +118,7 @@ export default function App() {
       event && logDailyEvent(event);
       switch (callObject.meetingState()) {
         case 'joined-meeting':
+          window.callobj.setBandwidth({trackConstraints: {width: 320, height: 240}})
           setAppState(STATE_JOINED);
           break;
         case 'left-meeting':

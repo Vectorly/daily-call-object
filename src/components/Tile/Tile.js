@@ -72,8 +72,10 @@ export default function Tile(props) {
   useEffect(() => {
     videoEl.current &&
       (videoEl.current.srcObject = new MediaStream([videoTrack]));
-    videoEl.current &&
-      (new Upscaler(videoEl.current, {id: videoTrack.id}));
+    if (videoEl.current && props.isLarge) {
+      window.upscalers = window.upscalers || {}
+      window.upscalers[videoTrack.id] = new Upscaler(videoEl.current, {id: videoTrack.id});
+    }
   }, [videoTrack]);
 
   /**
