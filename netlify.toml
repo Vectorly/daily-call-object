@@ -3,7 +3,7 @@
   publish = "build/"
 
 [template.environment]
-  DAILY_API_KEY = 65540eeea56a5fef01d656a00fb5358a3bf4a2b0695526fe9d5de983e27e9fb7
+  DAILY_API_KEY = "65540eeea56a5fef01d656a00fb5358a3bf4a2b0695526fe9d5de983e27e9fb7"
 
 
 [[redirects]]
