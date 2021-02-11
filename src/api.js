@@ -13,7 +13,6 @@ const newRoomEndpoint =
  */
 async function createRoom() {
 
-  /*
   const exp = Math.round(Date.now() / 1000) + 60 * 30;
   const options = {
     properties: {
@@ -27,10 +26,9 @@ async function createRoom() {
   }),
     room = await response.json();
   return room;
-  */
 
   // Comment out the above and uncomment the below, using your own URL
-  return { url: "https://superstream.daily.co/test" };
+  // return { url: "https://superstream.daily.co/test" };
 }
 
 export default { createRoom };

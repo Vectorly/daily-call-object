@@ -12,12 +12,14 @@ function getTrackUnavailableMessage(kind, trackState) {
       } else if (trackState.blocked.byDeviceMissing) {
         return `${kind} device missing`;
       }
+      break
     case 'off':
       if (trackState.off.byUser) {
         return `${kind} muted`;
       } else if (trackState.off.byBandwidth) {
         return `${kind} muted to save bandwidth`;
       }
+      break
     case 'sendable':
       return `${kind} not subscribed`;
     case 'loading':
@@ -25,6 +27,8 @@ function getTrackUnavailableMessage(kind, trackState) {
     case 'interrupted':
       return `${kind} interrupted`;
     case 'playable':
+      return null;
+    default:
       return null;
   }
 }
@@ -41,7 +45,6 @@ function getTrackUnavailableMessage(kind, trackState) {
 export default function Tile(props) {
   const videoEl = useRef(null);
   const audioEl = useRef(null);
-  let upsc = null;
 
   const videoTrack = useMemo(() => {
     return props.videoTrackState && props.videoTrackState.state === 'playable'
@@ -70,7 +73,7 @@ export default function Tile(props) {
     videoEl.current &&
       (videoEl.current.srcObject = new MediaStream([videoTrack]));
     videoEl.current &&
-      (upsc = new Upscaler(videoEl.current, {id: videoTrack.id}));
+      (new Upscaler(videoEl.current, {id: videoTrack.id}));
   }, [videoTrack]);
 
   /**
