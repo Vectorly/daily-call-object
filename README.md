@@ -1,12 +1,9 @@
-# A video chat app using React and the Daily JavaScript API
+# Vectorly Integration for Daily.co
 
-This demo is meant to showcase a basic but complete video chat web app using React and the low-level Daily call object. [The call object](https://docs.daily.co/docs/build-a-custom-video-chat-interface#daily-call-object) gives you direct access to the audio and video tracks, letting you build your app however you'd like with those primitives.
+This demo is meant to illustrate how Vectorly can be integrated into a Video Conferencing WebRTC chat app like Daily.co
 
-![Two participants on a video chat call](./screenshot-react-demo.png)
+This repo is forked from the [Daily.co demo repo](https://github.com/daily-demos/call-object-react). Much of the setup is directly from that original. We will highlight where Vectorly's code is located.
 
-For a step-by-step guide on how we built this demo, [check out our blog post](https://www.daily.co/blog/building-a-custom-video-chat-app-with-react/).
-
-Check out a live version of the demo [here](https://call-object-react.netlify.app/). 
 
 ## Prerequisites
 
@@ -26,25 +23,29 @@ In our app, when a user clicks to start a call, the app will create a [meeting r
 3. Then open your browser and go to `http://localhost:3002`
 4. Add the Daily room URL you created to line 31 of `api.js`, and follow the comment's instructions.
 
-OR...
 
-## Running using Netlify CLI
+## Integrating Vectorly AI Upscaling
 
-If you want access to the Daily REST API (using the proxy as specified in `netlify.toml`) as well as a more robust local dev environment, please do the following (in this project's directory):
+You'll need to make 2 main changes to enable Vectorly's AI upscaling to work on a general video conferencing application like Daily.co.
 
-1. Deploy to your Netlify account
-   [![Deploy with Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/daily-demos/call-object-react)
-2. Install the Netlify CLI `npm i -g netlify-cli`
-3. Login to your account `netlify login`
-4. Rename `sample.env` to `.env` and add your API key
-5. Start the dev server `netlify dev`
+1. Adjust the video encoder settings to send downscaled video content from the user's device (Line 121 in src/components/App/App.js
 
-> Note: If the API proxy isn't working locally you may need to run `netlify build` first. This will put API key in the `netlify.toml` file, so make sure you don't commit this change.
+```
+ case 'joined-meeting':
+      window.callobj.setBandwidth({trackConstraints: {width: 320, height: 240}})
+      setAppState(STATE_JOINED);
+      break;
+ ```
 
-## Contributing and feedback
+ 2. Initialize the Upscaler object, and feed it the video tag of the main output view window (Line 77 in src/components/Tile/Tile.js)
 
-Let us know how experimenting with this demo goes! Feel free to [open an Issue](https://github.com/daily-co/daily-demos/issues), or reach us any time at `help@daily.co`. You can also join the conversation about this demo on [DEV](https://dev.to/trydaily/build-a-video-chat-app-in-minutes-with-react-and-daily-js-481c).
+```
+    if (videoEl.current && props.isLarge) {
+      window.upscalers = window.upscalers || {}
+      window.upscalers[videoTrack.id] = new Upscaler(videoEl.current, {id: videoTrack.id});
+    }
+```
 
-## What's next
 
-To get to know even more Daily API methods and events, explore our other demos, like [how to add your own chat interface](https://github.com/daily-co/daily-demos/tree/main/static-demos/simple-chat-demo).
+With those two changes, you should be able to see Vectorly's technology working to upscale video content.
+
