@@ -12,7 +12,7 @@ const newRoomEndpoint =
  * to use the Daily REST API to create rooms and what options are available. 
  */
 async function createRoom() {
-/*
+
   const exp = Math.round(Date.now() / 1000) + 60 * 30;
   const options = {
     properties: {
@@ -26,9 +26,9 @@ async function createRoom() {
   }),
     room = await response.json();
   return room;
-*/
+
   // Comment out the above and uncomment the below, using your own URL
-   return { url: "https://vectorly.daily.co/test-room" };
+  // return { url: "https://test.daily.co/test" };
 }
 
 export default { createRoom };
